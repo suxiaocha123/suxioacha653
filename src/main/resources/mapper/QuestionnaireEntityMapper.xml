@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.QuestionnaireEntityMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.dao.entity.QuestionnaireEntity">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+        <result column="survey_name" jdbcType="VARCHAR" property="surveyName" />
+        <result column="survey_content" jdbcType="LONGVARCHAR" property="surveyContent" />
+        <result column="survey_type" jdbcType="VARCHAR" property="surveyType" />
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, user_name,project_name,survey_name,survey_content,survey_type,creation_date,last_update_date
+    </sql>
+
+    <!--展示所有问卷信息-->
+    <select id="queryProjectList" parameterType="com.example.dao.entity.ProjectEntity" resultType="com.example.dao.entity.ProjectEntity">
+           SELECT  id, user_name as "userName",
+                                  project_name as"projectName",survey_name as"surveyName",survey_content as "surveyContent",
+                                  survey_type as "surveyType",
+                                 creation_date as"creationDate" ,end_date as "endDate"
+           FROM survey_info s , project_info p
+           WHERE f.projectName = p.projectName
+
+</select>
+
+
+    <insert id="insertSurvey" parameterType="com.example.dao.entity.QuestionnaireEntity">
+
+        insert into survey_info (id, user_name ,project_name  ,survey_name ,survey_content  , survey_type  ,creation_date  ,end_date  )
+        values (#{id,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+                #{projectName,jdbcType=VARCHAR}, #{surveyName,jdbcType=VARCHAR},#{surveyContent,jdbcType=LONGVARCHAR},
+                #{surveyType,jdbcType=VARCHAR},
+               #{creationDate,jdbcType=TIMESTAMP},#{endDate,jdbcType=TIMESTAMP})
+    </insert>
+
+
+    <update id="updateSurvey" parameterType="com.example.dao.entity.QuestionnaireEntity">
+
+        update survey_info
+        <set>
+            <if test="surveyName != null">
+                survey_name = #{surveyName,jdbcType=VARCHAR},
+            </if>
+            <if test="surveyContent != null">
+                survey_content = #{surveyContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <update id="deleteSurvey" parameterType="com.example.dao.entity.QuestionnaireEntity">
+        UPDATE survey_info
+        SET deleted = true
+        WHERE id = #{id, jdbcType=VARCHAR}
+    </update>
+
+</mapper>

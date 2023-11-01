@@ -1,0 +1,17 @@
+server:
+  port: 8085
+
+mybatis:
+  #标注实体类位置
+  typeAliasesPackage: com.example.dao.entity
+  #标注待解析的mapper的xml文件位置
+  mapper-locations: classpath:mapper/*.xml
+  #开启mybaits的二级缓存
+  configuration:
+    cache-enabled: true
+spring:
+  datasource:
+    url : jdbc:mysql://localhost:3306/myweb?serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+    username : root
+    password : 123456
+    driverClassName : com.mysql.cj.jdbc.Driver
